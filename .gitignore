@@ -1,0 +1,9 @@
+#python + virtual environment
+.venv
+__pycache__
+
+#sqlite db
+db.sqlite3
+
+#VS Code
+.vscode
