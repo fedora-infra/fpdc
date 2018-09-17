@@ -1,2 +1,2 @@
-# fdc
-Fedora Definition Center
+# fpdc
+Fedora Product Definition Center
