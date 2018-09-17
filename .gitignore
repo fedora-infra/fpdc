@@ -1,6 +1,8 @@
 #python + virtual environment
 .venv
 __pycache__
+.coverage
+.pytest_cache
 
 #sqlite db
 db.sqlite3
