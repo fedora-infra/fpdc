@@ -13,7 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework.routers import DefaultRouter
 
-urlpatterns = [url(r"^admin/", admin.site.urls)]
+from fpdc.releases.views import ReleaseTypeViewSet
+
+router = DefaultRouter(trailing_slash=False)
+
+router.register(r"releasetype", ReleaseTypeViewSet)
+
+urlpatterns = [
+    url(r"^admin/", admin.site.urls),
+    url(r"^api/v1/", include(router.urls, namespace="v1")),
+]

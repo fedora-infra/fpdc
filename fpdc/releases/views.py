@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from fpdc.releases.models import ReleaseType
+from fpdc.releases.serializers import ReleaseTypeSerializer
+
+
+class ReleaseTypeViewSet(viewsets.ModelViewSet):
+    queryset = ReleaseType.objects.all()
+    serializer_class = ReleaseTypeSerializer
