@@ -7,3 +7,4 @@ pytest-django
 mixer
 tox
 freezegun
+flask-oidc

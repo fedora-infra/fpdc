@@ -25,7 +25,7 @@ SECRET_KEY = "change-this-in-production"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost"]
 
 
 # Application definition
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "rest_framework_swagger",
     # fpdc apps
     "fpdc.releases",
+    "mozilla_django_oidc",
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,7 @@ REST_FRAMEWORK = {
     "PAGE_SIZE": 10,
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.NamespaceVersioning",
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticatedOrReadOnly",),
+    "DEFAULT_AUTHENTICATION_CLASSES": ["mozilla_django_oidc.contrib.drf.OIDCAuthentication"],
 }
 
 
@@ -113,7 +115,23 @@ AUTH_PASSWORD_VALIDATORS = [
 # Authentication backends
 # https://docs.djangoproject.com/en/1.11/ref/settings/#authentication-backends
 
-AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
+]
+
+# OIDC Settings
+OIDC_RP_SIGN_ALGO = "RS256"
+OIDC_RP_IDP_SIGN_KEY = "-----BEGIN RSA PUBLIC KEY-----\nMIIBCgKCAQEAq/0/XjILQxF3OaQZtFE3wVJ5UUuxZbxiJ/z+Zai0EOHiaMMxVyoo\nibDRen615r525DQ8TmQyR0eMQEpQ6SUvaOunahpYohgAkbkYggUMQhcoCLme18ZJ\nBTNWTP8w4t7mcuZd1cy1KtHpEvH4gkrjp8N3vIv1lzFraSc+p2rHMbV+AX5CJQ1H\nohBdwaqyOBKp0nzY27gu2EH2vzCwXkO4zGtrHfjjGc0Ra4WG+xz1AWg833xcFj3p\nqM3vca09jDLBme+GT151LcCCXRNyOZPZ3ZX62NxkMyqvVJHC3Uu2Q1hSHO7f6AZk\nZXY88PXXEH52T2ZrWiISowjTcGUboP8goQIDAQAB\n-----END RSA PUBLIC KEY-----\n"
+OIDC_RP_CLIENT_ID = os.getenv("OIDC_RP_CLIENT_ID")
+OIDC_RP_CLIENT_SECRET = os.getenv("OIDC_RP_CLIENT_SECRET")
+OIDC_OP_AUTHORIZATION_ENDPOINT = "https://iddev.fedorainfracloud.org/openidc/Authorization"
+OIDC_OP_TOKEN_ENDPOINT = "https://iddev.fedorainfracloud.org/openidc/Token"
+OIDC_OP_USER_ENDPOINT = "https://iddev.fedorainfracloud.org/openidc/UserInfo"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL_FAILURE = "/error"
+OIDC_RP_SCOPES = "openid profile email"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
