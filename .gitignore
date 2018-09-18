@@ -3,6 +3,7 @@
 __pycache__
 .coverage
 .pytest_cache
+.tox
 
 #sqlite db
 db.sqlite3

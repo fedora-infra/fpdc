@@ -33,3 +33,9 @@ You can run the tests with the following command.
 ```
 $ py.test
 ```
+
+You can also run all the checks (linting, format and licenses) that are validated by the CI pipeline using the tox command.
+
+```
+$ tox
+```
