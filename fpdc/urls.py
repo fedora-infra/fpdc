@@ -25,5 +25,5 @@ router.register(r"releasetype", ReleaseTypeViewSet)
 
 urlpatterns = [
     url(r"^admin/", admin.site.urls),
-    url(r"^api/v1/", include(router.urls, namespace="v1")),
+    url(r"^api/v1/", include((router.urls, "releases"), namespace="v1")),
 ]
