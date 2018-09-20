@@ -17,11 +17,11 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
 
-from fpdc.releases.views import ReleaseTypeViewSet
+from fpdc.releases.views import ReleaseViewSet
 
 router = DefaultRouter(trailing_slash=False)
 
-router.register(r"releasetype", ReleaseTypeViewSet)
+router.register(r"release", ReleaseViewSet)
 
 urlpatterns = [
     url(r"^admin/", admin.site.urls),

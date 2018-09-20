@@ -1,17 +1,22 @@
 from django.test import TestCase
 
-from fpdc.releases.serializers import ReleaseTypeSerializer
+from fpdc.releases.serializers import ReleaseSerializer
 from mixer.backend.django import mixer
 
 
-class ReleaseTypeSerializerTests(TestCase):
+class ReleaseSerializerTests(TestCase):
     def test_serialize(self):
-        release_type = mixer.blend("releases.ReleaseType")
-        serializer = ReleaseTypeSerializer(release_type)
-        assert serializer.data["short"] == release_type.short
-        assert serializer.data["name"] == release_type.name
-        assert serializer.data["suffix"] == release_type.suffix
+        release = mixer.blend("releases.Release")
+        serializer = ReleaseSerializer(release)
+        assert serializer.data["short"] == release.short
+        assert serializer.data["version"] == release.version
 
     def test_deserialize_invalid(self):
-        serializer = ReleaseTypeSerializer(data={"name": None, "short": "short-name"})
+        serializer = ReleaseSerializer(data={"release_id": None, "short": "short-name"})
         assert serializer.is_valid() is False
+
+    def test_calculated_fields(self):
+        release = mixer.blend("releases.Release", eol_date="2017-01-01")
+        serializer = ReleaseSerializer(release)
+        assert serializer.data["release_type"] == "eol"
+        assert serializer.data["active"] is False

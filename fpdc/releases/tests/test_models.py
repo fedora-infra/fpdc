@@ -1,19 +1,28 @@
 import pytest
+from datetime import date
+from django.test import TestCase
 from mixer.backend.django import mixer
 
+from fpdc.releases.models import Release
 
 pytestmark = pytest.mark.django_db
 
 
-class TestReleaseType:
-    def test_model(self):
-        obj = mixer.blend("releases.ReleaseType")
-        assert obj.pk == 1, "Should create a ReleaseType instance"
+class ReleaseTests(TestCase):
+    def test_create(self):
+        """Ensure we can create an instance of Release."""
+        mixer.blend(Release)
+        assert Release.objects.count() == 1
 
-    def test_model_fields(self):
-        obj = mixer.blend(
-            "releases.ReleaseType", short="ga", name="Release", suffix="-updates-testing"
-        )
-        assert obj.short == "ga", "Should have a short field"
-        assert obj.name == "Release", "Should have a name field"
-        assert obj.suffix == "-updates-testing", "Should have a suffix field"
+    def test_query(self):
+        """Ensure we can query for instances."""
+        mixer.blend(Release, short="fedora")
+        r = Release.objects.get(short__exact="fedora")
+        assert r.short == "fedora"
+
+    def test_calculated_fields(self):
+        """Ensure we can query calculated fields."""
+        mixer.blend(Release, eol_date=date(2018, 5, 29), release_date=date(2017, 7, 11))
+        r = Release.objects.get(release_type__exact="eol")
+        assert r.release_type == "eol"
+        assert r.active is False

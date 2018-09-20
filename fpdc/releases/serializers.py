@@ -1,9 +1,9 @@
 from rest_framework.serializers import ModelSerializer
 
-from fpdc.releases.models import ReleaseType
+from fpdc.releases.models import Release
 
 
-class ReleaseTypeSerializer(ModelSerializer):
+class ReleaseSerializer(ModelSerializer):
     class Meta:
-        model = ReleaseType
+        model = Release
         fields = "__all__"

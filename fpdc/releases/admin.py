@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from fpdc.releases.models import ReleaseType
+from fpdc.releases.models import Release
 
 # Register your models here.
-admin.site.register(ReleaseType)
+admin.site.register(Release)

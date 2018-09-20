@@ -3,54 +3,62 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from fpdc.releases.models import ReleaseType
+from fpdc.releases.models import Release
+
+DATA = {
+    "release_id": "fedora-27",
+    "short": "fedora",
+    "name": "Fedora",
+    "version": 27,
+    "release_date": "2017-11-14",
+    "eol_date": "2018-11-30",
+    "sigkey": "0xdeadbeef",
+}
 
 
-class ReleaseTypeViewTests(APITestCase):
-    def test_create_release_type(self):
-        url = reverse("v1:releasetype-list")
-        data = {"name": "Release", "short": "ga", "suffix": ""}
-        response = self.client.post(url, data, format="json")
+class ReleaseViewTests(APITestCase):
+    def test_create_release(self):
+        url = reverse("v1:release-list")
+        response = self.client.post(url, DATA, format="json")
         assert response.status_code == status.HTTP_201_CREATED
-        assert ReleaseType.objects.count() == 1
-        assert ReleaseType.objects.get().name == "Release"
+        assert Release.objects.count() == 1
+        assert Release.objects.get().release_id == "fedora-27"
 
-    def test_update_release_type(self):
-        release_type = mixer.blend(ReleaseType)
-        url = reverse("v1:releasetype-detail", kwargs={"pk": release_type.pk})
-        data = {"name": "Release", "short": release_type.short, "suffix": release_type.suffix}
-        response = self.client.put(url, data, format="json")
+    def test_update_release(self):
+        release = mixer.blend(Release)
+        url = reverse("v1:release-detail", kwargs={"pk": release.pk})
+        response = self.client.put(url, DATA, format="json")
         assert response.status_code == status.HTTP_200_OK
-        assert ReleaseType.objects.count() == 1
-        assert ReleaseType.objects.get().name == "Release"
+        assert Release.objects.count() == 1
+        assert Release.objects.get().release_id == "fedora-27"
 
-    def test_partial_update_release_type(self):
-        release_type = mixer.blend(ReleaseType)
-        url = reverse("v1:releasetype-detail", kwargs={"pk": release_type.pk})
-        data = {"name": "Release"}
+    def test_partial_update_release(self):
+        release = mixer.blend(Release)
+        url = reverse("v1:release-detail", kwargs={"pk": release.pk})
+        data = {"release_id": "fedora-28"}
         response = self.client.patch(url, data, format="json")
         assert response.status_code == status.HTTP_200_OK
-        assert ReleaseType.objects.count() == 1
-        assert ReleaseType.objects.get().name == "Release"
+        assert Release.objects.count() == 1
+        assert Release.objects.get().release_id == "fedora-28"
 
-    def test_delete_release_type(self):
-        release_type = mixer.blend(ReleaseType)
-        url = reverse("v1:releasetype-detail", kwargs={"pk": release_type.pk})
-        assert ReleaseType.objects.count() == 1
+    def test_delete_release(self):
+        release = mixer.blend(Release)
+        url = reverse("v1:release-detail", kwargs={"pk": release.pk})
+        assert Release.objects.count() == 1
         response = self.client.delete(url, format="json")
         assert response.status_code == status.HTTP_204_NO_CONTENT
-        assert ReleaseType.objects.count() == 0
+        assert Release.objects.count() == 0
 
-    def test_get_release_type(self):
-        release_type = mixer.blend(ReleaseType)
-        url = reverse("v1:releasetype-detail", kwargs={"pk": release_type.pk})
+    def test_get_release(self):
+        release = mixer.blend(Release)
+        url = reverse("v1:release-detail", kwargs={"pk": release.pk})
         response = self.client.get(url, format="json")
         assert response.status_code == status.HTTP_200_OK
-        assert response.data["name"] == release_type.name
+        assert response.data["release_id"] == release.release_id
 
-    def test_get_release_type_list(self):
-        mixer.cycle(5).blend(ReleaseType)
-        url = reverse("v1:releasetype-list")
+    def test_get_release_list(self):
+        mixer.cycle(5).blend(Release)
+        url = reverse("v1:release-list")
         response = self.client.get(url, format="json")
         assert response.status_code == status.HTTP_200_OK
-        assert ReleaseType.objects.count() == 5
+        assert Release.objects.count() == 5
