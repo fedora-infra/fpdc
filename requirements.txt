@@ -2,3 +2,4 @@ django == 1.11
 djangorestframework == 3.8.2
 psycopg2-binary
 django-computed-property
+gunicorn

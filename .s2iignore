@@ -1,0 +1,7 @@
+.tox
+.git
+build
+dist
+*.egg-info
+venv
+.venv
