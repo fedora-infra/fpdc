@@ -1,9 +1,9 @@
 import os
 import json
-from .base import *
+from .base import *  # NOQA
 
 # Directory where the configmap is monted in openshift
-CONFIG_DIR = os.environ.get("OPENSHIFT_CONFIG_DIR", BASE_DIR)
+CONFIG_DIR = os.environ.get("OPENSHIFT_CONFIG_DIR", BASE_DIR)  # NOQA
 DEBUG = False
 
 ALLOWED_HOSTS = [os.environ.get("OPENSHIFT_APP_DNS")]
@@ -22,3 +22,4 @@ DATABASES = {
         "PORT": "",
     }
 }
+
