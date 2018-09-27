@@ -17,7 +17,6 @@ class Release(models.Model):
     )
     active = computed_property.ComputedBooleanField(compute_from="_active", default=True)
 
-    @property
     def _release_type(self):
         if self.release_date > datetime.date.today():
             return "development"
@@ -25,6 +24,5 @@ class Release(models.Model):
             return "eol"
         return "ga"
 
-    @property
     def _active(self):
         return self.release_type == "ga"
