@@ -6,3 +6,4 @@ pytest-cov
 pytest-django
 mixer
 tox
+freezegun
