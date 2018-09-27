@@ -23,6 +23,6 @@ class ReleaseTests(TestCase):
     def test_calculated_fields(self):
         """Ensure we can query calculated fields."""
         mixer.blend(Release, eol_date=date(2018, 5, 29), release_date=date(2017, 7, 11))
-        r = Release.objects.get(release_type__exact="eol")
-        assert r.release_type == "eol"
+        r = Release.objects.get(status__exact="eol")
+        assert r.status == "eol"
         assert r.active is False

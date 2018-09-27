@@ -30,9 +30,9 @@ class Migration(migrations.Migration):
                 ("eol_date", models.DateField()),
                 ("sigkey", models.CharField(max_length=255)),
                 (
-                    "release_type",
+                    "status",
                     computed_property.fields.ComputedCharField(
-                        compute_from="_release_type", editable=False, max_length=255, null=True
+                        compute_from="_status", editable=False, max_length=255, null=True
                     ),
                 ),
                 (

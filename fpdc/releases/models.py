@@ -12,12 +12,10 @@ class Release(models.Model):
     release_date = models.DateField()
     eol_date = models.DateField()
     sigkey = models.CharField(max_length=255, blank=False)
-    release_type = computed_property.ComputedCharField(
-        compute_from="_release_type", max_length=255, null=True
-    )
+    status = computed_property.ComputedCharField(compute_from="_status", max_length=255, null=True)
     active = computed_property.ComputedBooleanField(compute_from="_active", default=True)
 
-    def _release_type(self):
+    def _status(self):
         if self.release_date > datetime.date.today():
             return "development"
         if self.eol_date < datetime.date.today():
@@ -25,4 +23,4 @@ class Release(models.Model):
         return "ga"
 
     def _active(self):
-        return self.release_type == "ga"
+        return self.status == "ga"

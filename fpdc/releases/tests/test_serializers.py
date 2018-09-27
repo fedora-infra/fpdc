@@ -18,5 +18,5 @@ class ReleaseSerializerTests(TestCase):
     def test_calculated_fields(self):
         release = mixer.blend("releases.Release", eol_date="2017-01-01")
         serializer = ReleaseSerializer(release)
-        assert serializer.data["release_type"] == "eol"
+        assert serializer.data["status"] == "eol"
         assert serializer.data["active"] is False
