@@ -21,6 +21,20 @@ First upgrade pip and then install the dependencies
 (.venv) $ pip install -r requirements-dev.txt
 ```
 
+Get a client ID and secret, if you don't already have one.
+
+```
+(.venv) $ curl --request POST --header "Content-Type: application/json" --data '{"redirect_uris": ["http://localhost:8000/oidc/callback/"], "application_type": "native", "token_endpoint_auth_method": "client_secret_post"}' https://iddev.fedorainfracloud.org/openidc/Registration
+```
+
+Extract the client ID and secret received from the provider above and export them into the virtual
+environment:
+
+```
+(.venv) $ export OIDC_RP_CLIENT_ID=...
+(.venv) $ export OIDC_RP_CLIENT_SECRET=...
+```
+
 ### docker-compose environment
 
 A docker-compose environment is available to give access to a development environment
