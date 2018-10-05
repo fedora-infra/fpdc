@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "computed_property",
+    "rest_framework_swagger",
     # fpdc apps
     "fpdc.releases",
 ]
