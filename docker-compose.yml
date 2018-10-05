@@ -5,6 +5,7 @@ services:
   web:
     build: .
     command: /code/run-container.sh
+    env_file: .env
     environment:
       - DJANGO_SETTINGS_MODULE=fpdc.settings.base
       - PYTHONPATH=/code

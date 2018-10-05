@@ -10,3 +10,6 @@ db.sqlite3
 
 #VS Code
 .vscode
+
+#local runtime settings
+.env
