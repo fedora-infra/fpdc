@@ -40,6 +40,17 @@ environment:
 A docker-compose environment is available to give access to a development environment
 which is close to the production environment.
 
+In order to use the client ID and secret generated in the previous step, put the ID
+and secret into a `.env` file in the project root.
+
+```
+$ cat > .env <<EOF
+> OIDC_RP_CLIENT_ID=...
+> OIDC_RP_CLIENT_SECRET=...
+> EOF
+$
+```
+
 To start with docker-compose first make sure you have docker installed and running on your system.
 
 ```
