@@ -76,24 +76,24 @@ class ReleaseViewTests(APITestCase):
     def test_create_release_unauthenticated(self):
         url = reverse("v1:release-list")
         response = self.client.post(url, DATA, format="json")
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_update_release_unauthenticated(self):
         release = mixer.blend(Release)
         url = reverse("v1:release-detail", kwargs={"pk": release.pk})
         response = self.client.put(url, DATA, format="json")
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_partial_update_release_unauthenticated(self):
         release = mixer.blend(Release)
         url = reverse("v1:release-detail", kwargs={"pk": release.pk})
         data = {"release_id": "fedora-28"}
         response = self.client.patch(url, data, format="json")
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_delete_release_unauthenticated(self):
         release = mixer.blend(Release)
         url = reverse("v1:release-detail", kwargs={"pk": release.pk})
         assert Release.objects.count() == 1
         response = self.client.delete(url, format="json")
-        assert response.status_code == status.HTTP_403_FORBIDDEN
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
