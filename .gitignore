@@ -13,3 +13,6 @@ db.sqlite3
 
 #local runtime settings
 .env
+
+#oidc secret file
+client_secrets.json

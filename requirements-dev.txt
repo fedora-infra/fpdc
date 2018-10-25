@@ -7,4 +7,6 @@ pytest-django
 mixer
 tox
 freezegun
-oidc-register
+# Install oidc-register v0.2
+-e git://github.com/puiterwijk/oidc-register.git@170278046cea33fac81dfd4a34d9829827eb8973#egg=oidc-register
+fpdc-client

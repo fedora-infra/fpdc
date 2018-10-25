@@ -24,10 +24,16 @@ First upgrade pip and then install the dependencies
 Get a client ID and secret, if you don't already have one.
 
 ```
+(.venv) $ oidc-register https://iddev.fedorainfracloud.org/openidc/ http://localhost:12345/ http://localhost:23456/ http://localhost:8000/oidc/callback/
+```
+
+You can also use curl if you do not wish to use `oidc-register`
+
+```
 (.venv) $ curl --request POST --header "Content-Type: application/json" --data '{"redirect_uris": ["http://localhost:1234", "http://localhost:8000/oidc/callback/"], "application_type": "native", "token_endpoint_auth_method": "client_secret_post"}' https://iddev.fedorainfracloud.org/openidc/Registration
 ```
 
-Extract the client ID and secret received from the provider above and export them into the virtual
+Extract the client ID and secret received from the provider (inside the client_secrets.json file) above and export them into the virtual
 environment:
 
 ```
@@ -125,12 +131,11 @@ $ tox
 
 ### Create a new release
 
-An example of scripts that creates a new release using the OIDC authentication is available under `examples`. To run this example you need to
-install `openidc-client`.
+An example of scripts that creates a new release using the OIDC authentication is available under `examples`.
 
 ```
-$ pip install openidc-client
 $ docker-compose up -d
 $ python examples/create_release.py
-$ curl -X GET "http://localhost:8000/api/v1/release" -H  "accept: application/json"
 ```
+
+This script will open the browser and ask you to login using you FAS credentials.
