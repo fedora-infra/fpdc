@@ -115,10 +115,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Authentication backends
 # https://docs.djangoproject.com/en/1.11/ref/settings/#authentication-backends
 
-AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
-    "mozilla_django_oidc.auth.OIDCAuthenticationBackend",
-]
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend"]
 
 # OIDC Settings
 OIDC_RP_SIGN_ALGO = "RS256"
@@ -132,6 +129,8 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_REDIRECT_URL_FAILURE = "/error"
 OIDC_RP_SCOPES = "openid profile email"
+OIDC_DRF_AUTH_BACKEND = "fpdc.oidc_backend.FpdcOIDCAuthenticationBackend"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
@@ -162,3 +161,8 @@ LOGGING = {
         "django": {"handlers": ["console"], "level": os.getenv("DJANGO_LOG_LEVEL", "DEBUG")}
     },
 }
+
+# FPDC Settings
+
+# FAS group that give permission to create add and delete resources
+FAS_GROUP = "releng-team"

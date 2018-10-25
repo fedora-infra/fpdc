@@ -10,7 +10,7 @@ oidc = openidc_client.OpenIDCClient(
     os.getenv("OIDC_RP_CLIENT_SECRET"),
 )
 
-scopes = ["openid", "profile", "email", "https://fpdc.fedoraproject.org/oidc/create-release"]
+scopes = ["openid", "profile", "email", "https://id.fedoraproject.org/scope/groups"]
 
 url = "http://localhost:8000/api/v1/release"
 
