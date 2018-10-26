@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, ContentType
 
 from mixer.backend.django import mixer
 from rest_framework import status
@@ -22,6 +22,11 @@ class ReleaseViewTests(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = mixer.blend(User)
+        releases = ContentType.objects.get(app_label="releases")
+        releases_permissions = list(releases.permission_set.all())
+        group = Group.objects.create(name="releng-team")
+        group.permissions.set(releases_permissions)
+        group.user_set.add(cls.user)
 
     def test_create_release(self):
         url = reverse("v1:release-list")
