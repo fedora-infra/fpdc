@@ -1,7 +1,6 @@
 django == 1.11.16
 djangorestframework == 3.8.2
 django-computed-property
-django-rest-swagger
 psycopg2-binary
 gunicorn
 whitenoise

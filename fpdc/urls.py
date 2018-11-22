@@ -16,11 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from rest_framework_swagger.views import get_swagger_view
 
 from fpdc.releases.views import ReleaseViewSet
-
-schema_view = get_swagger_view(title="Fedora Product Definition Center")
 
 router = DefaultRouter(trailing_slash=False)
 
@@ -30,5 +27,4 @@ urlpatterns = [
     url(r"^admin/", admin.site.urls),
     url(r"^oidc/", include("mozilla_django_oidc.urls")),
     url(r"^api/v1/", include((router.urls, "releases"), namespace="v1")),
-    url(r"^$", schema_view),
 ]
