@@ -13,11 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+
 from rest_framework.routers import DefaultRouter
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
 
 from fpdc.releases.views import ReleaseViewSet
+
+schemaview = get_schema_view(title="Fedora Product Definition Center", url=settings.COREAPI_URL)
 
 router = DefaultRouter(trailing_slash=False)
 
@@ -27,4 +33,6 @@ urlpatterns = [
     url(r"^admin/", admin.site.urls),
     url(r"^oidc/", include("mozilla_django_oidc.urls")),
     url(r"^api/v1/", include((router.urls, "releases"), namespace="v1")),
+    url(r"^docs/", include_docs_urls(title="Fedora Product Definition Center")),
+    url(r"^$", schemaview),
 ]

@@ -5,3 +5,6 @@ psycopg2-binary
 gunicorn
 whitenoise
 mozilla-django-oidc == 1.1.2
+coreapi
+pygments
+markdown

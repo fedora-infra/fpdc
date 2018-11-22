@@ -167,3 +167,6 @@ LOGGING = {
 
 # FAS group that give permission to create add and delete resources
 FAS_GROUP = "releng-team"
+
+# Overriden in production and staging to use https://fpdc.{stg.}fedoraproject.org
+COREAPI_URL = "http://localhost:8000/"
