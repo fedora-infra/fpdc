@@ -10,4 +10,4 @@ class ReleaseViewSet(viewsets.ModelViewSet):
     serializer_class = ReleaseSerializer
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = "__all__"
-    ordering = ("id",)
+    ordering = ("-version",)  # Descending ordering on version higher version first.
