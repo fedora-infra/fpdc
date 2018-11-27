@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth.models import User, Group, ContentType
 
 from mixer.backend.django import mixer
@@ -102,3 +103,37 @@ class ReleaseViewTests(APITestCase):
         assert Release.objects.count() == 1
         response = self.client.delete(url, format="json")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_get_active_releases(self):
+        active_release = mixer.blend(
+            Release,
+            release_date=datetime.date.today(),
+            eol_date=datetime.date.today() + datetime.timedelta(days=10),
+        )
+        mixer.blend(
+            Release,
+            release_date=datetime.date.today(),
+            eol_date=datetime.date.today() - datetime.timedelta(days=10),
+        )
+        url = reverse("v1:release-list")
+        response = self.client.get(url, {"active": "true"})
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json().get("count") == 1
+        assert response.json().get("results")[0]["name"] == active_release.name
+
+    def test_get_inactive_releases(self):
+        mixer.blend(
+            Release,
+            release_date=datetime.date.today(),
+            eol_date=datetime.date.today() + datetime.timedelta(days=10),
+        )
+        eol_release = mixer.blend(
+            Release,
+            release_date=datetime.date.today(),
+            eol_date=datetime.date.today() - datetime.timedelta(days=10),
+        )
+        url = reverse("v1:release-list")
+        response = self.client.get(url, {"active": "false"})
+        assert response.status_code == status.HTTP_200_OK
+        assert response.json().get("count") == 1
+        assert response.json().get("results")[0]["name"] == eol_release.name
