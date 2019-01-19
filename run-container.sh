@@ -2,7 +2,7 @@
 
 echo ">> Waiting for postgres to start"
 WAIT=0
-while ! psql -h db postgres postgres -c "select 1"; do
+while ! psql -h 127.0.0.1 postgres postgres -c "select 1"; do
     sleep 1
     WAIT=$(($WAIT + 1))
     if [ "$WAIT" -gt 15 ]; then

@@ -41,9 +41,9 @@ environment:
 (.venv) $ export OIDC_RP_CLIENT_SECRET=...
 ```
 
-### docker-compose environment
+### container development environment
 
-A docker-compose environment is available to give access to a development environment
+A container based environment is available to give access to a development environment
 which is close to the production environment.
 
 In order to use the client ID and secret generated in the previous step, put the ID
@@ -57,60 +57,76 @@ $ cat > .env <<EOF
 $
 ```
 
-To start with docker-compose first make sure you have docker installed and running on your system.
+To start with this environment first make sure you have podman installed and running on your system.
 
 ```
-$ sudo dnf install docker
-$ sudo systemctl start docker
+$ sudo dnf install podman
 ```
 
-Then inside your virtual environment install docker-compose.
+Note: The following requires at least podman version 1.0.0
+
+If you are not running fedora you can check how to install podman on your system [here](https://github.com/containers/libpod/blob/master/install.md)
+
+You also need to have GNU make installed
 
 ```
-(.venv) $ pip install docker-compose
+$ sudo dnf install make
 ```
 
-If you do not wish to run docker-compose using sudo you will need to add your user to the docker group as follow.
+Once the installation is complete you can build the fpdc-web container
 
 ```
-$ sudo groupadd docker && sudo gpasswd -a $USER docker
-$ MYGRP=$(id -g) ; newgrp docker ; newgrp $MYGRP
+$ make build
 ```
 
-Note that this is has for effect to give root permission to users added to the docker group.
-
-Once the installation is complete you can start the docker-compose cluster
+After the container finished building, you can start a pod. This will start 2 containers inside the pod, a container running the django application `fpdc-web` and a container runnning a postgresql database `database`
 
 ```
-(.venv) $ docker-compose up
+$ make up
 ```
 
-You then will see the logs of the django web server and the postgresql database. You can
-start the cluster in a daemon mode (ie without displaying the logs) using the `-d`
-option.
+Then to access the logs of the container use:
 
 ```
-(.venv) $ docker-compose up -d
-```
-
-Then to access the logs use :
-
-```
-(.venv) $ docker-compose logs web
-(.venv) $ docker-compose logs bd
+$ make logs-web
+$ make logs-db
 
 ```
 
-Finally you can stop the cluster :
+Finally you can stop the pod:
 
 ```
-(.venv) $ docker-compose stop
+$ make stop
 ```
 
-To clean up the cluster and the database use :
+Start the pod:
 
 ```
-(.venv) $ docker-compose down --volumes
+$ make start
+```
+
+Check which containers are running in the pod:
+
+```
+$ make ps
+```
+
+To brind down the pod:
+
+```
+$ make down
+```
+
+Clean the database volume:
+
+```
+$ make prune
+```
+
+You can also get a shell access to the fpdc-web container
+
+```
+$ make shell
 ```
 
 ### Running the tests
