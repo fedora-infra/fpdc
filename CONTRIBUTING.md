@@ -35,6 +35,19 @@ instructions to configure your editor to run it on the files you edit.
 
 Note : The max line length is configured to be 100.
 
+### Code Complexity
+
+We use [radon](https://radon.readthedocs.io/en/latest/index.html) to check the code complexy of the application.
+We aim for fpdc to stay withing the A-C [rank of complexity](https://radon.readthedocs.io/en/latest/commandline.html#the-cc-command) and this is
+enforced by the CI pipeline.
+
+When making a change to the code base you can run radon manually:
+
+```
+(.venv) pip install radon
+(.venv) radon cc fpdc/ -e *.sqlite3,*.pyc
+```
+
 ### Tests
 
 The test suites can be run using [tox](http://tox.readthedocs.io/) by simply
