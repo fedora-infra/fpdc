@@ -19,9 +19,9 @@ prune:
 	sudo podman volume rm -f pgdata
 
 up:
-	sudo podman pod create --name fpdc-dev -p 8000:8000
-	sudo podman run --name fpdc-web --pod fpdc-dev -dt -e OIDC_RP_CLIENT_ID=$(OIDC_RP_CLIENT_ID) -e OIDC_RP_CLIENT_SECRET=$(OIDC_RP_CLIENT_SECRET) -e DJANGO_SETTINGS_MODULE=fpdc.settings.base -v $(CURDIR):/code fpdc-web
-	sudo podman run --name database --pod fpdc-dev -dt -e PGDATA=/var/lib/postgresql/data/pgdata -v pgdata:/var/lib/postgresql/data/pgdata  postgres
+	sudo podman pod create --name fpdc-dev
+	sudo podman run --name fpdc-web --net=host --pod fpdc-dev -dt -e OIDC_RP_CLIENT_ID=$(OIDC_RP_CLIENT_ID) -e OIDC_RP_CLIENT_SECRET=$(OIDC_RP_CLIENT_SECRET) -e DJANGO_SETTINGS_MODULE=fpdc.settings.base -v $(CURDIR):/code fpdc-web
+	sudo podman run --name database --net=host --pod fpdc-dev -dt -e PGDATA=/var/lib/postgresql/data/pgdata -v pgdata:/var/lib/postgresql/data/pgdata  postgres
 
 shell:
 	sudo podman exec -it fpdc-web bash
