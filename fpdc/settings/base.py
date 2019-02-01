@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "computed_property",
+    "mozilla_django_oidc",
     # fpdc apps
     "fpdc.releases",
-    "mozilla_django_oidc",
+    "fpdc.components",
 ]
 
 MIDDLEWARE = [
@@ -170,3 +171,6 @@ FAS_GROUP = "releng-team"
 
 # Overriden in production and staging to use https://fpdc.{stg.}fedoraproject.org
 COREAPI_URL = "http://localhost:8000/"
+
+# Dist Git URL
+DIST_GIT_URL = "https://src.fedoraproject.org/{namespace}/{name}"

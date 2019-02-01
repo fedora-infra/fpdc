@@ -22,17 +22,20 @@ from rest_framework.documentation import include_docs_urls
 from rest_framework.schemas import get_schema_view
 
 from fpdc.releases.views import ReleaseViewSet
+from fpdc.components.views import RPMPackageViewSet
 
 schemaview = get_schema_view(title="Fedora Product Definition Center", url=settings.COREAPI_URL)
 
 router = DefaultRouter(trailing_slash=False)
 
 router.register(r"release", ReleaseViewSet)
+router.register(r"rpms", RPMPackageViewSet)
 
 urlpatterns = [
     url(r"^admin/", admin.site.urls),
     url(r"^oidc/", include("mozilla_django_oidc.urls")),
     url(r"^api/v1/", include((router.urls, "releases"), namespace="v1")),
+    url(r"^api/v1/", include((router.urls, "rpms"), namespace="v1")),
     url(r"^docs/", include_docs_urls(title="Fedora Product Definition Center")),
     url(r"^$", schemaview),
 ]
