@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # fpdc apps
     "fpdc.releases",
     "fpdc.components",
+    "fpdc.common",
 ]
 
 MIDDLEWARE = [
