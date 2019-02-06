@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from fpdc.components.serializers import RPMPackageSerializer, ModuleSerializer
+from fpdc.components.serializers import RPMPackageSerializer, ModuleSerializer, ContainerSerializer
 from mixer.backend.django import mixer
 
 
@@ -27,4 +27,17 @@ class ModuleSerializerTests(TestCase):
 
     def test_deserialize_invalid(self):
         serializer = ModuleSerializer(data={"module_id": None, "name": "name"})
+        assert serializer.is_valid() is False
+
+
+class ContainerSerializerTests(TestCase):
+    def test_serialize(self):
+        container = mixer.blend("components.Container")
+        serializer = ContainerSerializer(container)
+        assert serializer.data["name"] == container.name
+        assert serializer.data["point_of_contact"] == container.point_of_contact
+        assert serializer.data["dist_git_url"] == container.dist_git_url
+
+    def test_deserialize_invalid(self):
+        serializer = ContainerSerializer(data={"module_id": None, "name": "name"})
         assert serializer.is_valid() is False

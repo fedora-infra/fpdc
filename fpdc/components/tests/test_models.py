@@ -1,7 +1,7 @@
 from django.test import TestCase
 from mixer.backend.django import mixer
 
-from fpdc.components.models import RPMPackage, Module
+from fpdc.components.models import RPMPackage, Module, Container
 
 
 class RPMPackageTest(TestCase):
@@ -40,3 +40,22 @@ class ModulesTest(TestCase):
         mixer.blend(Module, name="eog")
         r = Module.objects.get(name__exact="eog")
         assert r.dist_git_url == "https://src.fedoraproject.org/modules/eog"
+
+
+class ContainerTest(TestCase):
+    def test_create(self):
+        """Ensure we can create an instance of Modules."""
+        mixer.blend(Container)
+        assert Container.objects.count() == 1
+
+    def test_query(self):
+        """Ensure we can query for instances."""
+        mixer.blend(Container, name="origin")
+        r = Container.objects.get(name__exact="origin")
+        assert r.name == "origin"
+
+    def test_dist_git_url(self):
+        """ Ensure the dist_git_url field is properly computed """
+        mixer.blend(Container, name="origin")
+        r = Container.objects.get(name__exact="origin")
+        assert r.dist_git_url == "https://src.fedoraproject.org/container/origin"

@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from fpdc.components.models import RPMPackage, Module
+from fpdc.components.models import RPMPackage, Module, Container
 
 DATA = {"name": "firefox", "point_of_contact": "gecko-maint"}
 
@@ -182,5 +182,87 @@ class ModuleViewTests(APITestCase):
         module = mixer.blend(Module)
         url = reverse("v1:module-detail", kwargs={"pk": module.pk})
         assert Module.objects.count() == 1
+        response = self.client.delete(url, format="json")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+
+class ContainerViewTests(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = mixer.blend(User)
+        add_permissions(cls.user)
+
+    def test_create_container(self):
+        url = reverse("v1:container-list")
+        self.client.force_authenticate(self.__class__.user)
+        response = self.client.post(url, DATA, format="json")
+        assert response.status_code == status.HTTP_201_CREATED
+        assert Container.objects.count() == 1
+        assert Container.objects.get().name == "firefox"
+
+    def test_update_container(self):
+        container = mixer.blend(Container)
+        url = reverse("v1:container-detail", kwargs={"pk": container.pk})
+        self.client.force_authenticate(self.__class__.user)
+        response = self.client.put(url, DATA, format="json")
+        assert response.status_code == status.HTTP_200_OK
+        assert Container.objects.count() == 1
+        assert Container.objects.get().name == "firefox"
+
+    def test_partial_update_container(self):
+        container = mixer.blend(Container)
+        url = reverse("v1:container-detail", kwargs={"pk": container.pk})
+        data = {"name": "guake"}
+        self.client.force_authenticate(self.__class__.user)
+        response = self.client.patch(url, data, format="json")
+        assert response.status_code == status.HTTP_200_OK
+        assert Container.objects.count() == 1
+        assert Container.objects.get().name == "guake"
+
+    def test_delete_container(self):
+        container = mixer.blend(Container)
+        url = reverse("v1:container-detail", kwargs={"pk": container.pk})
+        assert Container.objects.count() == 1
+        self.client.force_authenticate(self.__class__.user)
+        response = self.client.delete(url, format="json")
+        assert response.status_code == status.HTTP_204_NO_CONTENT
+        assert Container.objects.count() == 0
+
+    def test_get_container(self):
+        container = mixer.blend(Container)
+        url = reverse("v1:container-detail", kwargs={"pk": container.pk})
+        response = self.client.get(url, format="json")
+        assert response.status_code == status.HTTP_200_OK
+        assert response.data["name"] == container.name
+
+    def test_get_container_list(self):
+        mixer.cycle(5).blend(Container)
+        url = reverse("v1:container-list")
+        response = self.client.get(url, format="json")
+        assert response.status_code == status.HTTP_200_OK
+        assert Container.objects.count() == 5
+
+    def test_create_container_unauthenticated(self):
+        url = reverse("v1:container-list")
+        response = self.client.post(url, DATA, format="json")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_update_container_unauthenticated(self):
+        container = mixer.blend(Container)
+        url = reverse("v1:container-detail", kwargs={"pk": container.pk})
+        response = self.client.put(url, DATA, format="json")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_partial_update_container_unauthenticated(self):
+        container = mixer.blend(Container)
+        url = reverse("v1:container-detail", kwargs={"pk": container.pk})
+        data = {"name": "guake"}
+        response = self.client.patch(url, data, format="json")
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_delete_container_unauthenticated(self):
+        module = mixer.blend(Container)
+        url = reverse("v1:container-detail", kwargs={"pk": module.pk})
+        assert Container.objects.count() == 1
         response = self.client.delete(url, format="json")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
