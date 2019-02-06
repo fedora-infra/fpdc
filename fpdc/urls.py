@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import url, include
-from django.contrib import admin
 
 from rest_framework.routers import DefaultRouter
 from rest_framework.documentation import include_docs_urls
@@ -33,7 +32,6 @@ router.register(r"rpms", RPMPackageViewSet)
 router.register(r"modules", ModuleViewSet)
 
 urlpatterns = [
-    url(r"^admin/", admin.site.urls),
     url(r"^oidc/", include("mozilla_django_oidc.urls")),
     url(r"^api/v1/", include((router.urls, "releases"), namespace="v1")),
     url(r"^api/v1/", include((router.urls, "rpms"), namespace="v1")),
