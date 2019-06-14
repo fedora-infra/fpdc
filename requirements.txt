@@ -1,4 +1,4 @@
-django == 1.11.19
+django == 1.11.21
 djangorestframework == 3.9.1
 django-computed-property
 psycopg2-binary
