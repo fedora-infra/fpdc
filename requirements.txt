@@ -1,10 +1,10 @@
-django == 1.11.21
-djangorestframework == 3.9.1
+django >= 1.11.21
+djangorestframework >= 3.9.1
 django-computed-property
 psycopg2-binary
 gunicorn
 whitenoise
-mozilla-django-oidc == 1.1.2
+mozilla-django-oidc >= 1.1.2
 coreapi
 pygments
 markdown
